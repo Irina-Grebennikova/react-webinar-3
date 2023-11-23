@@ -11,10 +11,15 @@ function App({store}) {
 
   const list = store.getState().list;
 
+  const onRemoveButtonClick = (e, code) => {
+    e.stopPropagation();
+    store.deleteItem(code);
+  }
+
   return (
     <div className='App'>
       <div className='App-head'>
-        <h1>Приложение на чистом JS</h1>
+        <h1>Приложение на React JS</h1>
       </div>
       <div className='App-controls'>
         <button onClick={() => store.addItem()}>Добавить</button>
@@ -26,9 +31,9 @@ function App({store}) {
               <div className={'Item' + (item.selected ? ' Item_selected' : '')}
                    onClick={() => store.selectItem(item.code)}>
                 <div className='Item-code'>{item.code}</div>
-                <div className='Item-title'>{item.title}</div>
+                <div className='Item-title'>{item.title}{item.timesSelected && item.infoSelected}</div>
                 <div className='Item-actions'>
-                  <button onClick={() => store.deleteItem(item.code)}>
+                  <button onClick={(e) => onRemoveButtonClick(e, item.code)}>
                     Удалить
                   </button>
                 </div>
