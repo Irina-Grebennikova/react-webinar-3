@@ -1,3 +1,5 @@
+import { pluralize } from "./utils";
+
 /**
  * Хранилище состояния приложения
  */
@@ -72,8 +74,8 @@ class Store {
           item.selected = !item.selected;
           item.timesSelected = item.selected ? (item.timesSelected + 1 || 1) : item.timesSelected;
 
-          const times = /^[^1]*[234]$/.test(String(item.timesSelected)) ? ' разa' : ' раз';
-          item.infoSelected = ` | Выделяли ${item.timesSelected}${times}`;
+          const times = pluralize(item.timesSelected, ['раз', 'раза', 'раз']);
+          item.infoSelected = ` | Выделяли ${item.timesSelected} ${times}`;
         } else {
           item.selected = false;
         }
