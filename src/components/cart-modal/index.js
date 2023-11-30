@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { cn as bem } from '@bem-react/classname';
 import PropTypes from "prop-types";
 import Head from '../head';
@@ -12,8 +12,18 @@ function CartModal(props) {
 
   const total = calculateTotal(props.cart) + ' ₽';
 
+  const callbacks = {
+    onDeleteFromCart: useCallback(code => {
+      props.onDeleteFromCart(code);
+    }),
+
+    onCloseCart: useCallback(() => {
+      props.onCloseCart();
+    }),
+  }
+
   const items = Object.values(props.cart).map(item => (
-    <ItemInCart key={item.code} item={item} />
+    <ItemInCart key={item.code} item={item} onDeleteFromCart={callbacks.onDeleteFromCart} />
   ));
 
   const content = items.length > 0 ? 
@@ -26,7 +36,7 @@ function CartModal(props) {
   return (
     <dialog className={cn()} open={props.open}>
       <main className={cn('container')}>
-        <Head title='Корзина' buttonText={'Закрыть'} buttonOnClick={props.onCloseCart} />
+        <Head title='Корзина' buttonText={'Закрыть'} buttonOnClick={callbacks.onCloseCart} />
         {content}
       </main>
     </dialog>
@@ -43,12 +53,14 @@ CartModal.propTypes = {
     })
   }).isRequired,
   open: PropTypes.bool,
-  onCloseCart: PropTypes.func
+  onCloseCart: PropTypes.func,
+  onDeleteFromCart: PropTypes.func
 }
 
 CartModal.defaultProps = {
   open: false,
-  onCloseCart: () => {}
+  onCloseCart: () => {},
+  onDeleteFromCart: () => {},
 }
 
 export default React.memo(CartModal);

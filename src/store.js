@@ -39,14 +39,16 @@ class Store {
   }
 
   /**
-   * Удаление записи по коду
+   * Удаление товара из корзины по коду
    * @param code
    */
-  deleteItem(code) {
+  deleteItemFromCart(code) {
+    const {[code]: itemToDelete, ...restItems} = this.state.cart;
+
     this.setState({
       ...this.state,
-      // Новый список, в котором не будет удаляемой записи
-      list: this.state.list.filter(item => item.code !== code)
+      // Новый объект корзины, в котором не будет удаляемого товара
+      cart: restItems
     })
   };
 

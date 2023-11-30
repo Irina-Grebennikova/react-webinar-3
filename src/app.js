@@ -20,19 +20,30 @@ function App({store}) {
     onAddItemToCart: useCallback((item) => {
       store.addToCart(item);
     }, [store]),
+
+    onDeleteFromCart: useCallback(code => {
+      store.deleteItemFromCart(code);
+    }, [store]),
+
     onOpenCart: useCallback(() => {
       setIsCartOpen(true);
     }),
+
     onCloseCart: useCallback(() => {
       setIsCartOpen(false);
-    })
+    }),
   }
 
   return (
     <PageLayout>
       <Head title='Магазин' />
       <CartInfo cart={cart} onOpenCart={callbacks.onOpenCart} />
-      <CartModal cart={cart} open={isCartOpen} onCloseCart={callbacks.onCloseCart}/>
+      <CartModal
+        cart={cart}
+        open={isCartOpen}
+        onCloseCart={callbacks.onCloseCart}
+        onDeleteFromCart={callbacks.onDeleteFromCart}
+      />
       <List list={list} onAddItemToCart={callbacks.onAddItemToCart}/>
     </PageLayout>
   );

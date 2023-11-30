@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
@@ -8,9 +8,9 @@ function ItemInCart(props) {
   const cn = bem('CartItem');
 
   const callbacks = {
-    onDelete: () => {
-      props.onDeleteFromCart(props.item);
-    }
+    onDelete: useCallback(() => {
+      props.onDeleteFromCart(props.item.code);
+    }),
   }
 
   return (
