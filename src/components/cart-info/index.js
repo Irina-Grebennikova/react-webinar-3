@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { plural } from '../../utils';
+import { plural, calculateTotal } from '../../utils';
 import './style.css';
 
 function CartInfo(props) {
-  const total = Object.values(props.cart).reduce((acc, item) => acc + item.price * item.quantity, 0) + ' ₽';
+  const total = calculateTotal(props.cart) + ' ₽';
   const count = Object.keys(props.cart).length;
   const countInfo = `${count} ${plural(count, {one: 'товар', few: 'товара', many: 'товаров'})}`;
 
@@ -14,7 +14,7 @@ function CartInfo(props) {
     <div className="CartInfo">
       В корзине:
       <div className='CartInfo-mainInfo'>{mainInfo}</div>
-      <button>Перейти</button>
+      <button onClick={props.onOpenCart}>Перейти</button>
     </div>
   )
 }
@@ -28,6 +28,11 @@ CartInfo.propTypes = {
       quantity: PropTypes.number,
     })
   }).isRequired,
+  onOpenCart: PropTypes.func
 };
+
+CartInfo.defaultProps = {
+  onOpenCart: () => {},
+}
 
 export default React.memo(CartInfo);

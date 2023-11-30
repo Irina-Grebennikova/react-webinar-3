@@ -3,6 +3,7 @@ import List from "./components/list";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
 import CartInfo from './components/cart-info';
+import CartModal from './components/cart-modal';
 
 /**
  * Приложение
@@ -10,6 +11,7 @@ import CartInfo from './components/cart-info';
  * @returns {React.ReactElement}
  */
 function App({store}) {
+  const [isCartOpen, setIsCartOpen] = React.useState(false);
 
   const list = store.getState().list;
   const cart = store.getState().cart;
@@ -18,12 +20,19 @@ function App({store}) {
     onAddItemToCart: useCallback((item) => {
       store.addToCart(item);
     }, [store]),
+    onOpenCart: useCallback(() => {
+      setIsCartOpen(true);
+    }),
+    onCloseCart: useCallback(() => {
+      setIsCartOpen(false);
+    })
   }
 
   return (
     <PageLayout>
       <Head title='Магазин' />
-      <CartInfo cart={cart}/>
+      <CartInfo cart={cart} onOpenCart={callbacks.onOpenCart} />
+      <CartModal cart={cart} open={isCartOpen} onCloseCart={callbacks.onCloseCart}/>
       <List list={list} onAddItemToCart={callbacks.onAddItemToCart}/>
     </PageLayout>
   );
