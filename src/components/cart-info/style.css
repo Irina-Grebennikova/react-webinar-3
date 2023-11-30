@@ -1,0 +1,14 @@
+.CartInfo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 60px;
+  padding-right: 21px;
+  border-bottom: 1px dashed #ccc;
+  font-size: 18px;
+}
+
+.CartInfo-mainInfo {
+  margin: 0 20px 0 15px;
+  font-weight: 700;
+}
