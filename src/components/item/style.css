@@ -1,12 +1,6 @@
 .Item {
   display: flex;
-  justify-content: flex-start;
-  transition: background-color 1s;
-}
-
-.Item_selected {
-  background: #75aaf1;
-  color: #fff;
+  justify-content: space-between;
 }
 
 .Item-code {
@@ -14,12 +8,17 @@
 }
 
 .Item-title {
-  width: 100%;
+  flex: auto;
   padding: 20px 10px;
 }
 
 .Item-actions {
   display: flex;
-  justify-content: flex-end;
+  gap: 24px;
   padding: 20px 20px 20px 10px;
+}
+
+.Item-price {
+  font-size: 18px;
+  color: #404040;
 }

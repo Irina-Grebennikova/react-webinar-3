@@ -13,15 +13,15 @@ function App({store}) {
   const list = store.getState().list;
 
   const callbacks = {
-    onDeleteItem: useCallback((code) => {
-      store.deleteItem(code);
+    onAddItemToCart: useCallback((item) => {
+      store.addToCart(item);
     }, [store]),
   }
 
   return (
     <PageLayout>
       <Head title='Магазин'/>
-      <List list={list} onDeleteItem={callbacks.onDeleteItem}/>
+      <List list={list} onAddItemToCart={callbacks.onAddItemToCart}/>
     </PageLayout>
   );
 }

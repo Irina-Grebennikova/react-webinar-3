@@ -49,6 +49,20 @@ class Store {
       list: this.state.list.filter(item => item.code !== code)
     })
   };
+
+    /**
+   * Добавление товара в корзину
+   * @param item
+   */
+  addToCart(item) {
+    const quantity = this.state.cart[item.code]?.quantity + 1 || 1;
+
+    this.setState({
+      ...this.state,
+      // Новый объект корзины, в который либо добавляем новый товар, либо увеличиваем количество существующего 
+      cart: { ...this.state.cart, [item.code]: { ...item, quantity } }
+    })
+  }
 }
 
 export default Store;

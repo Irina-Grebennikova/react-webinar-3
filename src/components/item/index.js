@@ -1,25 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {cn as bem} from '@bem-react/classname';
 import './style.css';
 
 function Item(props) {
 
+  const cn = bem('Item');
+
   const callbacks = {
-    onDelete: (e) => {
-      e.stopPropagation();
-      props.onDelete(props.item.code);
+    onAddToCart: () => {
+      props.onAddToCart(props.item);
     }
   }
 
   return (
-    <div className={'Item'}>
-      <div className='Item-code'>{props.item.code}</div>
-      <div className='Item-title'>
+    <div className={cn()}>
+      <div className={cn('code')}>{props.item.code}</div>
+      <div className={cn('title')}>
         {props.item.title}
       </div>
-      <div className='Item-actions'>
-        <button onClick={callbacks.onDelete}>
-          Удалить
+      <div className={cn('actions')}>
+        <span className={cn('price')}>{props.item.price} ₽</span>
+        <button onClick={callbacks.onAddToCart}>
+          Добавить
         </button>
       </div>
     </div>
@@ -31,11 +34,11 @@ Item.propTypes = {
     code: PropTypes.number,
     title: PropTypes.string,
   }).isRequired,
-  onDelete: PropTypes.func
+  onAddToCart: PropTypes.func
 };
 
 Item.defaultProps = {
-  onDelete: () => {
+  onAddToCart: () => {
   },
 }
 
