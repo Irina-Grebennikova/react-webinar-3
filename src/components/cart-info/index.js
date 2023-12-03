@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { plural, calculateTotal } from '../../utils';
+import { plural, calculateTotal, formatPrice } from '../../utils';
 import './style.css';
 
 function CartInfo(props) {
-  const total = calculateTotal(props.cart) + ' ₽';
+  const total = formatPrice(calculateTotal(props.cart));
   const count = Object.keys(props.cart).length;
   const countInfo = `${count} ${plural(count, {one: 'товар', few: 'товара', many: 'товаров'})}`;
 

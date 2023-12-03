@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
-import {cn as bem} from '@bem-react/classname';
+import { cn as bem } from '@bem-react/classname';
+import { formatPrice } from "../../utils";
 import './style.css';
 
 function ItemInCart(props) {
@@ -20,7 +21,7 @@ function ItemInCart(props) {
         {props.item.title}
       </div>
       <div className={cn('actions')}>
-        <span className={cn('price')}>{props.item.price} ₽</span>
+        <span className={cn('price')}>{formatPrice(props.item.price)}</span>
         <span className={cn('quantity')}>{props.item.quantity} шт</span>
         <button onClick={callbacks.onDelete}>
           Удалить

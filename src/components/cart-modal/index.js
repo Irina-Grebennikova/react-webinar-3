@@ -3,14 +3,14 @@ import { cn as bem } from '@bem-react/classname';
 import PropTypes from "prop-types";
 import Head from '../head';
 import ItemInCart from '../item-in-cart';
-import { calculateTotal } from '../../utils';
+import { calculateTotal, formatPrice } from '../../utils';
 import './style.css';
 
 function CartModal(props) {
 
   const cn = bem('CartModal');
 
-  const total = calculateTotal(props.cart) + ' ₽';
+  const total = formatPrice(calculateTotal(props.cart));
 
   const callbacks = {
     onDeleteFromCart: useCallback(code => {

@@ -58,3 +58,15 @@ export function generateCode2() {
 export function calculateTotal(cart) {
   return Object.values(cart).reduce((acc, item) => acc + item.price * item.quantity, 0);
 }
+
+/**
+ * Форматирование цены
+ * @returns {string}
+ */
+export function formatPrice(value, currency = "RUB", locale = "ru-RU") {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+    minimumFractionDigits: 0
+  }).format(value);
+}
