@@ -1,0 +1,12 @@
+.ProductInfo {
+  padding: 20px 40px;
+  font-size: 18px;
+}
+
+.ProductInfo p {
+  margin: 0 0 20px;
+}
+
+.ProductInfo-price {
+  font-size: 24px;
+}

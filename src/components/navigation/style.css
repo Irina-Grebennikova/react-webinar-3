@@ -1,0 +1,11 @@
+.Navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 20px;
+}
+
+.Navigation-link {
+  font-size: 18px;
+  color: #0087e9;;
+}
