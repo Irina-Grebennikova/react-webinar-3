@@ -18,9 +18,9 @@ class Product extends StoreModule {
   }
 
   async load(id) {
-    const QUERY = '?fields=title,description,madeIn(title,code),category(title),edition,price,images';
+    const query = '?fields=title,description,madeIn(title,code),category(title),edition,price,images';
     const response =
-      await fetch(`/api/v1/articles/${id}${QUERY}`);
+      await fetch(`/api/v1/articles/${id}${query}`);
     const json = await response.json();
     this.setState(json.result, 'Загружен товар по id из АПИ');
   }
