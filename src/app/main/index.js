@@ -3,11 +3,13 @@ import { useSearchParams } from 'react-router-dom';
 import Item from "../../components/item";
 import PageLayout from "../../components/page-layout";
 import Head from "../../components/head";
+import BasketTool from "../../components/basket-tool";
 import List from "../../components/list";
 import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
-import Navigation from '../../components/navigation';
 import Pagination from '../../components/pagination';
+import NavBar from '../../components/nav-bar';
+import NavLinks from '../../components/nav-links';
 import { PER_PAGE } from '../../constants';
 
 function Main() {
@@ -25,6 +27,8 @@ function Main() {
   }, [searchParams]);
 
   const select = useSelector(state => ({
+    amount: state.basket.amount,
+    sum: state.basket.sum,
     list: state.catalog.list,
     totalCount: state.catalog.totalCount
   }));
@@ -33,19 +37,27 @@ function Main() {
 
   const callbacks = {
     // Добавление в корзину
-    addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
+    addToBasket: useCallback(item => store.actions.basket.addToBasket(item), [store]),
+    openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
   }
 
   const renders = {
     item: useCallback((item) => {
-      return <Item item={item} onAdd={callbacks.addToBasket}/>
+      return <Item item={item} onAdd={callbacks.addToBasket} path={`/product/${item._id}`}/>
     }, [callbacks.addToBasket]),
   };
 
   return (
     <PageLayout>
       <Head title='Магазин' />
-      <Navigation />
+      <NavBar>
+        <NavLinks />
+        <BasketTool
+          onOpen={callbacks.openModalBasket}
+          amount={select.amount}
+          sum={select.sum}
+        />
+      </NavBar>
       <List list={select.list} renderItem={renders.item}/>
       <Pagination currentPage={currentPage} lastPage={lastPage}/>
     </PageLayout>

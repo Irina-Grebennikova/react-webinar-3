@@ -2,11 +2,12 @@ import { memo, useCallback, useEffect } from "react";
 import { useParams } from "react-router";
 import PageLayout from "../../components/page-layout";
 import Head from "../../components/head";
-import Navigation from "../../components/navigation";
 import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
+import BasketTool from "../../components/basket-tool";
 import ProductInfo from "../../components/product-info";
-import './style.css';
+import NavBar from "../../components/nav-bar";
+import NavLinks from "../../components/nav-links";
 
 function ProductPage() {
   const { id } = useParams();
@@ -14,28 +15,33 @@ function ProductPage() {
   const store = useStore();
 
   useEffect(() => {
-    store.actions.catalog.load();
-  }, []);
-
-  useEffect(() => {
     store.actions.product.load(id);
   }, [id]);
 
   const select = useSelector(state => ({
     product: state.product,
+    amount: state.basket.amount,
+    sum: state.basket.sum,
   }));
 
   const callbacks = {
     // Добавление в корзину
-    addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
+    addToBasket: useCallback(item => store.actions.basket.addToBasket(item), [store]),
+    openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
   }
 
   return (
     <PageLayout>
       <Head title={select.product.title} />
-      <Navigation />
-      <ProductInfo product={select.product}></ProductInfo>
-      <button className="ProductPage-add" onClick={() => callbacks.addToBasket(id)}>Добавить</button>
+      <NavBar>
+        <NavLinks />
+        <BasketTool
+          onOpen={callbacks.openModalBasket}
+          amount={select.amount}
+          sum={select.sum}
+        />
+      </NavBar>
+      <ProductInfo product={select.product} addToBasket={callbacks.addToBasket}></ProductInfo>
     </PageLayout>
   )
 }

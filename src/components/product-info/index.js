@@ -2,7 +2,7 @@ import { memo } from "react";
 import { numberFormat } from "../../utils";
 import './style.css';
 
-function ProductInfo({ product }) {
+function ProductInfo({ product, addToBasket }) {
   const { description, madeIn, edition, price, category } = product;
 
   return (
@@ -11,7 +11,10 @@ function ProductInfo({ product }) {
       <p>Страна производитель: <b>{madeIn?.title} ({madeIn?.code})</b></p>
       <p>Категория: <b>{category?.title}</b></p>
       <p>Год выпуска: <b>{edition}</b></p>
-      <strong className="ProductInfo-price">Цена: {numberFormat(price)} ₽</strong>
+      <p>
+        <strong className="ProductInfo-price">Цена: {numberFormat(price)} ₽</strong>
+      </p>
+      <button onClick={() => addToBasket(product)}>Добавить</button>
     </div>
   )
 }

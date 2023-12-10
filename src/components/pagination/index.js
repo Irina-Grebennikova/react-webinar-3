@@ -16,7 +16,7 @@ function Pagination({ currentPage, lastPage }) {
         )}
         {currentPage > 3 && <span className={cn("button", "rest")}>...</span>}
         {currentPage === lastPage && (
-          <Link to={`?page=3`} className={cn("button")}>
+          <Link to={`?page=${lastPage - 2}`} className={cn("button")}>
             {lastPage - 2}
           </Link>
         )}
@@ -36,7 +36,9 @@ function Pagination({ currentPage, lastPage }) {
             3
           </Link>
         )}
-        {currentPage < lastPage - 2 && <span className={cn("button", "rest")}>...</span>}
+        {currentPage < lastPage - 2 && (
+          <span className={cn("button", "rest")}>...</span>
+        )}
         {currentPage < lastPage - 1 && (
           <Link to={`?page=${lastPage}`} className={cn("button")}>
             {lastPage}
