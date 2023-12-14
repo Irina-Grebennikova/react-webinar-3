@@ -1,0 +1,15 @@
+.UserCard {
+  padding: 40px 20px;
+}
+
+.UserCard-title {
+  margin: 0 0 30px;
+}
+
+.UserCard-list {
+  font-size: 18px;
+}
+
+.UserCard-list > *:not(:last-child) {
+  margin-bottom: 20px;
+}

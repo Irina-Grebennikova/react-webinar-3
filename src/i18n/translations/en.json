@@ -19,5 +19,9 @@
   "password": "Password",
   "signIn": "Sign in",
   "signInButton": "Sign in",
-  "signOut": "Sign out"
+  "signOut": "Sign out",
+  "profile.title": "Profile",
+  "profile.name": "Name",
+  "profile.phone": "Phone",
+  "profile.email": "email"
 }

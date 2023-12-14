@@ -6,12 +6,12 @@ import './style.css';
 
 function LoginForm(props) {
   const cn = bem('Login');
-  const {t} = useTranslate();
+  const { t, handleSubmit, error, isSubmitting } = props;
 
   return (
     <section className={cn()}>
       <h2 className={cn('title')}>{t('signIn')}</h2>
-      <form className={cn('form')} onSubmit={props.handleSubmit}>
+      <form className={cn('form')} onSubmit={handleSubmit}>
         <label>
           <div>{t('login')}</div>
           <input name="login" autoComplete="username"/>
@@ -20,8 +20,8 @@ function LoginForm(props) {
           <div>{t('password')}</div>
           <input type="password" name="password" autoComplete="password"/>
         </label>
-        {props.error && <p className={cn('error')}>{props.error}</p>}
-        <button type="submit" disabled={props.isSubmitting}>{t('signInButton')}</button>
+        {error && <p className={cn('error')}>{error}</p>}
+        <button type="submit" disabled={isSubmitting}>{t('signInButton')}</button>
       </form>
     </section>
   );
@@ -29,12 +29,14 @@ function LoginForm(props) {
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   error: PropTypes.string,
   isSubmitting: PropTypes.bool,
 };
 
 LoginForm.defaultProps = {
-  handleSubmit: (e) => {},
+  handleSubmit: () => {},
+  t: () => {},
 }
 
 export default memo(LoginForm);
