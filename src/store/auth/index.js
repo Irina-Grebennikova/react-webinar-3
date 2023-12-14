@@ -7,11 +7,10 @@ class AuthState extends StoreModule {
 
   initState() {
     return {
-      token: localStorage.getItem('prefix-token') ?? null,
-      userName: '',
+      token: localStorage.getItem('prefix-token') ?? '',
+      username: localStorage.getItem('prefix-username') ?? '',
       userData: {},
       error: null,
-      successMessage: null,
       waiting: false, // признак ожидания загрузки
     }
   }
@@ -42,24 +41,67 @@ class AuthState extends StoreModule {
       if (json.error) {
         throw new Error(json.error.data.issues[0].message);
       }
+      const token = json.result.token;
+      const username = json.result.user.profile.name;
 
       // Авторизация прошла успешно
       this.setState({
-        token: json.result.token,
-        name: json.result.user.profile.name,
+        token,
+        username,
         error: null,
         waiting: false
       }, 'Пользователь авторизован');
 
-      localStorage.setItem('prefix-token', json.result.token);
+      localStorage.setItem('prefix-token', token);
+      localStorage.setItem('prefix-username', username);
 
     } catch (e) {
       // Ошибка при логине
       this.setState({
-        token: null,
+        token: '',
         error: e?.message || 'Неизвестная ошибка',
         waiting: false
       });
+    }
+  }
+
+  async logout() {
+    // Установка признака ожидания загрузки
+    this.setState({
+      ...this.getState(),
+      waiting: true
+    });
+
+    try {
+      const response = await fetch('/api/v1/users/sign', {
+        method: 'DELETE',
+        headers: {
+          'X-Token': this.getState().token,
+          'Content-Type': 'application/json'
+        },
+      });
+      const json = await response.json();
+
+      if (json.error) {
+        throw new Error(json.error.data.issues[0].message);
+      }
+
+      // Успешный выход из профиля
+      this.setState({
+        ...this.initState,
+        token: '',
+        username: '',
+      }, 'Пользователь разлогинился');
+
+      localStorage.setItem('prefix-token', '');
+      localStorage.setItem('prefix-username', '');
+
+    } catch (e) {
+      // Ошибка при выходе из профиля
+      this.setState({
+        waiting: false
+      });
+      console.error(e);
     }
   }
 }

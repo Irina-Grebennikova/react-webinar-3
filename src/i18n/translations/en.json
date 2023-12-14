@@ -18,5 +18,6 @@
   "login": "Login",
   "password": "Password",
   "signIn": "Sign in",
-  "signInButton": "Sign in"
+  "signInButton": "Sign in",
+  "signOut": "Sign out"
 }

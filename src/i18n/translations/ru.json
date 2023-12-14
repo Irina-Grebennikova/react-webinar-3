@@ -20,5 +20,6 @@
   "login": "Логин",
   "password": "Пароль",
   "signIn": "Вход",
-  "signInButton": "Войти"
+  "signInButton": "Войти",
+  "signOut": "Выход"
 }

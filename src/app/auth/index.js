@@ -8,6 +8,7 @@ import Head from "../../components/head";
 import Navigation from "../../containers/navigation";
 import LocaleSelect from "../../containers/locale-select";
 import LoginForm from '../../components/login-form';
+import UserBar from '../../containers/user-bar';
 
 /**
  * Страница авторизации
@@ -44,6 +45,7 @@ function Auth() {
 
   return (
     <PageLayout>
+      <UserBar />
       <Head title={t('title')}>
         <LocaleSelect/>
       </Head>

@@ -1,0 +1,12 @@
+.HeaderTop {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px 20px;
+}
+
+.HeaderTop a {
+  font-size: 13px;
+  color: #0087e9;
+}
