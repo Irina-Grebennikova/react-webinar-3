@@ -9,7 +9,6 @@ class AuthState extends StoreModule {
     return {
       token: localStorage.getItem('prefix-token') ?? '',
       username: localStorage.getItem('prefix-username') ?? '',
-      userData: {},
       error: null,
       waiting: false, // признак ожидания загрузки
     }
@@ -98,46 +97,6 @@ class AuthState extends StoreModule {
 
     } catch (e) {
       // Ошибка при выходе из профиля
-      this.setState({
-        waiting: false
-      });
-      console.error(e);
-    }
-  }
-
-  async loadUser() {
-    // Установка признака ожидания загрузки
-    this.setState({
-      ...this.getState(),
-      waiting: true
-    });
-
-    try {
-      const response = await fetch('/api/v1/users/self?fields=*', {
-        method: 'GET',
-        headers: {
-          'X-Token': this.getState().token,
-          'Content-Type': 'application/json'
-        },
-      });
-      const json = await response.json();
-
-      if (json.error) {
-        throw new Error(json.error.data.issues[0].message);
-      }
-
-      // Данные пользователя получены
-      this.setState({
-        ...this.getState(),
-        waiting: false,
-        userData: {
-          ...json.result.profile,
-          email: json.result.email
-        }
-      }, 'Данные пользователя получены');
-
-    } catch (e) {
-      // Ошибка при запросе данных пользователя
       this.setState({
         waiting: false
       });

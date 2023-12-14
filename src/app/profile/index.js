@@ -20,12 +20,12 @@ function Profile() {
 
   const select = useSelector(state => ({
     token: state.auth.token,
-    userData: state.auth.userData,
-    waiting: state.auth.waiting,
+    userData: state.user.userData,
+    waiting: state.user.waiting,
   }));
 
   useEffect(() => {
-    select.token ? store.actions.auth.loadUser() : navigate('/login');
+    select.token ? store.actions.user.loadUser(select.token) : navigate('/login');
   }, [select.token]);
 
   const {t} = useTranslate();
