@@ -1,0 +1,32 @@
+.Comment {
+  margin-bottom: 30px;
+}
+
+.Comment-header {
+  display: flex;
+  gap: 10px;
+}
+
+.Comment-author {
+  font-size: 12px;
+  margin: 0;
+}
+
+.Comment-date {
+  font-size: 12px;
+  color: #665;
+}
+
+.Comment-text {
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.Comment-button {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 12px;
+  color: #0087e9;
+  cursor: pointer;
+}
