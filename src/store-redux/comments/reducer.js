@@ -14,7 +14,10 @@ function reducer(state = initialState, action) {
       return {...state, list: action.payload.list, waiting: false};
 
     case "comments/load-error":
-      return {...state,  list: [], waiting: false}; //@todo текст ошибки сохранять?
+      return { ...state, list: [], waiting: false }; //@todo текст ошибки сохранять?
+    
+    case "comments/add":
+      return { ...state, list: [...state.list, action.payload] };
 
     default:
       // Нет изменений
