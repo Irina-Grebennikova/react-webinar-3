@@ -10,34 +10,43 @@ function CommentsList({
   activeCommentId,
   onReply,
   isAuth,
+  lang,
   articleInfo,
   cancelReply,
   addComment,
   navigateToLogin,
+  t,
 }) {
-
   return (
     <section className="CommentsList">
-      <h2 className="CommentsList-title">Комментарии ({comments.length})</h2>
+      <h2 className="CommentsList-title">{t("comments.title")} ({comments.length})</h2>
       {comments.map((c) => (
         <Comment
           key={c._id}
           comment={c}
           isActive={c._id === activeCommentId}
           isAuth={isAuth}
+          lang={lang}
           cancelReply={cancelReply}
           addComment={addComment}
           onReply={() => onReply(c._id)}
           navigateToLogin={navigateToLogin}
+          t={t}
         />
       ))}
       {isAuth && activeCommentId === null && (
-        <AddCommentForm title="Новый комментарий" addComment={addComment} parent={articleInfo} />
+        <AddCommentForm
+          title={t("comments.newComment")}
+          addComment={addComment}
+          parent={articleInfo}
+          t={t}
+        />
       )}
       {!isAuth && activeCommentId === null && (
         <AuthToCommentMsg
-          actionText="комментировать"
+          actionText={t("comments.comment")}
           onLinkClick={navigateToLogin}
+          t={t}
         />
       )}
     </section>
@@ -67,6 +76,7 @@ CommentsList.propTypes = {
   cancelReply: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
   navigateToLogin: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
 };
 
 export default memo(CommentsList);

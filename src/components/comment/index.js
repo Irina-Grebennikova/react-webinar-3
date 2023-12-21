@@ -11,9 +11,11 @@ function Comment({
   onReply,
   isActive,
   isAuth,
+  lang,
   addComment,
   navigateToLogin,
   cancelReply,
+  t,
 }) {
   const cn = bem("Comment");
   const INDENT_SIZE = 30;
@@ -22,35 +24,38 @@ function Comment({
     _id: comment._id,
     _type: "comment",
   };
+  const locale = lang === 'en' ? 'en-US' : 'ru-RU';
 
   return (
     <section className={cn()} style={sectionStyle}>
       <div className={cn("header")}>
         <h5 className={cn("author")}>{comment.author.profile.name}</h5>
         <time className={cn("date")}>
-          {dateTimeFormat(new Date(comment.dateCreate))}
+          {dateTimeFormat(new Date(comment.dateCreate), locale)}
         </time>
       </div>
       <p className={cn("text")}>{comment.text}</p>
       <button className={cn("button")} onClick={onReply}>
-        Ответить
+        {t("comments.reply")}
       </button>
 
       {isActive && isAuth && (
         <AddCommentForm
-          title="Новый ответ"
+          title={t("comments.newReply")}
           parent={commentInfo}
           showCancelBtn
           onCancel={cancelReply}
           addComment={addComment}
+          t={t}
         />
       )}
       {isActive && !isAuth && (
         <AuthToCommentMsg
-          actionText="ответить."
+          actionText={t("comments.reply") + "."}
           showCancelBtn
           onCancel={cancelReply}
           onLinkClick={navigateToLogin}
+          t={t}
         />
       )}
     </section>
@@ -71,9 +76,11 @@ Comment.propTypes = {
   onReply: PropTypes.func.isRequired,
   isActive: PropTypes.bool.isRequired,
   isAuth: PropTypes.bool.isRequired,
+  lang: PropTypes.string.isRequired,
   addComment: PropTypes.func.isRequired,
   cancelReply: PropTypes.func.isRequired,
   navigateToLogin: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
 };
 
 Comment.defaultProps = {
@@ -81,9 +88,11 @@ Comment.defaultProps = {
   onReply: () => {},
   isActive: false,
   isAuth: false,
-  addComment: () => { },
-  cancelReply: () => { },
-  navigateToLogin: () => { },
+  lang: "ru",
+  addComment: () => {},
+  cancelReply: () => {},
+  navigateToLogin: () => {},
+  t: (key) => key,
 };
 
 export default memo(Comment);

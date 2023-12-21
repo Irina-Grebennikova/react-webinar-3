@@ -8,18 +8,19 @@ function AuthToCommentMsg({
   showCancelBtn = false,
   onCancel,
   onLinkClick,
+  t
 }) {
   const cn = bem("AuthToCommentMsg");
 
   return (
     <p>
       <span className={cn("button")} onClick={onLinkClick}>
-        Войдите
+        {t("comments.signIn")}
       </span>
-      , чтобы иметь возможность {actionText}
+      , {t("comments.toBeAble")} {actionText}
       {showCancelBtn && (
         <span className={cn("button", { cancel: true })} onClick={onCancel}>
-          Отмена
+           {t("comments.cancel")}
         </span>
       )}
     </p>
@@ -31,10 +32,12 @@ AuthToCommentMsg.propTypes = {
   showCancelBtn: PropTypes.bool,
   onCancel: PropTypes.func,
   onLinkClick: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
 };
 
 AuthToCommentMsg.defaultProps = {
-  onCancel: () => {},
+  onCancel: () => { },
+  t: (key) => key,
 }
 
 export default memo(AuthToCommentMsg);

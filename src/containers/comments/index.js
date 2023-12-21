@@ -9,10 +9,13 @@ import CommentsList from "../../components/comments-list";
 import Spinner from "../../components/spinner";
 import treeToList from "../../utils/tree-to-list";
 import listToTree from "../../utils/list-to-tree";
+import useTranslate from "../../hooks/use-translate";
 
 function Comments({ articleId }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const {t, lang} = useTranslate();
 
   const [commentReplyingId, setCommentReplyingId] = useState(null);
 
@@ -54,6 +57,7 @@ function Comments({ articleId }) {
         activeCommentId={commentReplyingId}
         onReply={setCommentReplyingId}
         isAuth={isAuth}
+        lang={lang}
         articleInfo={{
           _id: articleId,
           _type: "article",
@@ -61,6 +65,7 @@ function Comments({ articleId }) {
         cancelReply={() => setCommentReplyingId(null)}
         navigateToLogin={navigateToLogin}
         addComment={addComment}
+        t={t}
       />
     </Spinner>
   );
