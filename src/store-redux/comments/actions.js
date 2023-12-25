@@ -7,33 +7,35 @@ export default {
   load: (id) => {
     return async (dispatch, getState, services) => {
       // Сброс текущего cписка комментариев и установка признака ожидания загрузки
-      dispatch({type: 'comments/load-start'});
+      dispatch({ type: "comments/load-start" });
 
       try {
         const res = await services.api.request({
-          url: `/api/v1/comments?fields=items(_id,text,dateCreate,author(profile(name)),parent(_id,_type),isDeleted),count&limit=*&search[parent]=${id}`,
+          url: `/api/v1/comments?fields=items(_id,text,dateCreate,author(profile(name)),parent(_id,_type,_tree),isDeleted),count&limit=*&search[parent]=${id}`,
         });
         // Комментарии загружены успешно
-        dispatch({type: 'comments/load-success', payload: {list: res.data.result.items}});
-
+        dispatch({
+          type: "comments/load-success",
+          payload: { list: res.data.result.items },
+        });
       } catch (e) {
         //Ошибка загрузки
-        dispatch({type: 'comments/load-error'});
+        dispatch({ type: "comments/load-error" });
       }
-    }
+    };
   },
   add: (text, parent) => {
     return async (dispatch, _, services) => {
       try {
         const res = await services.api.request({
-          url: '/api/v1/comments?fields=_id,text,dateCreate,author(profile(name)),parent(_id,_type)',
-          method: 'POST',
-          body: JSON.stringify({text, parent}),
+          url: "/api/v1/comments?fields=_id,text,dateCreate,author(profile(name)),parent(_id,_type)",
+          method: "POST",
+          body: JSON.stringify({ text, parent }),
         });
-        dispatch({type: 'comments/add', payload: res.data.result});
+        dispatch({ type: "comments/add", payload: res.data.result });
       } catch (e) {
         console.error(e);
       }
-    }
-  }
-}
+    };
+  },
+};

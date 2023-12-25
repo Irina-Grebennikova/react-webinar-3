@@ -1,16 +1,11 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
+import { forwardRef, memo } from "react";
 import { cn as bem } from "@bem-react/classname";
 import "./style.css";
 
-function AddCommentForm({
-  title,
-  parent,
-  showCancelBtn = false,
-  onCancel,
-  addComment,
-  t,
-}) {
+const AddCommentForm = forwardRef((
+  { title, style, showCancelBtn = false, parent, addComment, onCancel, t }, ref
+) => {
+
   const cn = bem("AddCommentForm");
 
   const handleSubmit = (e) => {
@@ -18,14 +13,18 @@ function AddCommentForm({
 
     const form = e.currentTarget;
     const formData = new FormData(form);
+    const comment = formData.get("comment").trim();
 
-    addComment(formData.get("comment"), parent);
+    if (!comment.length) {
+      return;
+    }
+    addComment(comment, parent);
 
     form.reset();
   };
-
+  
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={cn()} style={style} ref={ref}>
       <h5 className={cn("title")}>{title}</h5>
       <textarea className={cn("textarea")} name={"comment"}></textarea>
       <br />
@@ -37,20 +36,6 @@ function AddCommentForm({
       )}
     </form>
   );
-}
-
-AddCommentForm.propTypes = {
-  title: PropTypes.string.isRequired,
-  parent: PropTypes.object.isRequired,
-  showCancelBtn: PropTypes.bool,
-  onCancel: PropTypes.func,
-  addComment: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired,
-};
-
-AddCommentForm.defaultProps = {
-  onCancel: () => {},
-  t: (key) => key,
-};
+});
 
 export default memo(AddCommentForm);

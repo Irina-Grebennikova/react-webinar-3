@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector as useSelectorRedux } from "react-redux";
 import PropTypes from "prop-types";
@@ -15,54 +15,73 @@ function Comments({ articleId }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {t, lang} = useTranslate();
+  const { t, lang } = useTranslate();
 
-  const [commentReplyingId, setCommentReplyingId] = useState(null);
+  const [commentReplying, setCommentReplying] = useState(null);
+  const [commentBeforeForm, setCommentBeforeForm] = useState(null);
 
   useInit(() => {
     dispatch(commentsActions.load(articleId));
   }, [articleId]);
 
-  const select = useSelectorRedux((state) => ({
+  const selectRedux = useSelectorRedux((state) => ({
     comments: state.comments.list,
     waiting: state.comments.waiting,
   }));
 
-  const isAuth = useSelector((state) => state.session.exists);
+  const select = useSelector((state) => ({
+    isAuth: state.session.exists,
+    authUserId: state.session.user._id,
+  }));
 
   const comments = useMemo(
     () =>
       treeToList(
-        listToTree(select.comments, "_id", "article"),
+        listToTree(selectRedux.comments, "_id", "article"),
         (item, level) => ({
           ...item,
           level,
         })
       ),
-    [select.comments]
+    [selectRedux.comments]
   );
 
   const addComment = (text, parent) => {
     dispatch(commentsActions.add(text, parent));
-    setCommentReplyingId(null);
-  }
+    setCommentReplying(null);
+  };
 
   const navigateToLogin = () =>
     navigate("/login", { state: { back: location.pathname } });
 
+  const onReply = (comment) => {
+    const lastChildComment = findLastChild(comment);
+    
+    setCommentBeforeForm(lastChildComment);
+    setCommentReplying(comment);
+  };
+
+  const findLastChild = (comment) => {
+    return comment.children.length
+      ? findLastChild(comment.children[comment.children.length - 1])
+      : comment;
+  };
+
   return (
-    <Spinner active={select.waiting}>
+    <Spinner active={selectRedux.waiting}>
       <CommentsList
         comments={comments}
-        activeCommentId={commentReplyingId}
-        onReply={setCommentReplyingId}
-        isAuth={isAuth}
+        commentReplying={commentReplying}
+        commentBeforeForm={commentBeforeForm}
+        onReply={onReply}
+        isAuth={select.isAuth}
         lang={lang}
+        authUserId={select.authUserId}
         articleInfo={{
           _id: articleId,
           _type: "article",
         }}
-        cancelReply={() => setCommentReplyingId(null)}
+        cancelReply={() => setCommentReplying(null)}
         navigateToLogin={navigateToLogin}
         addComment={addComment}
         t={t}

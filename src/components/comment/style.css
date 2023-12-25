@@ -1,5 +1,6 @@
 .Comment {
   margin-bottom: 30px;
+  overflow-wrap: break-word;
 }
 
 .Comment-header {
@@ -10,6 +11,10 @@
 .Comment-author {
   font-size: 12px;
   margin: 0;
+}
+
+.Comment-author_active {
+  color: #665;
 }
 
 .Comment-date {
